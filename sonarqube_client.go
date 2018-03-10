@@ -1,13 +1,13 @@
 package main
 
+
 import "fmt" 
 import "log" 
 import "net/http" 
 import "io/ioutil"
-import "os"
 import "github.com/tidwall/gjson"
 import "strconv"
-
+import "os"
 
 
 func main() {
@@ -19,29 +19,33 @@ func main() {
 
 	site := "http://localhost:9000"
 	command := `get-coverage`
+	expected_coverage := 100
 
 	if len(os.Args) > 1 {
-		command, site = processArgs(os.Args[1:], `--site`)
+		command, site, expected_coverage = processArgs(os.Args[1:])
 	}
 	
-	dispatch(command, site)
+	dispatch(command, site, expected_coverage)
 
 	
 }
 
-func processArgs(args []string, key string) (command string, site string) {
+func processArgs(args []string) (command string, site string, expected_coverage int) {
 	command = args[0]
 	
 	i := 1
 
 	for i < len(args) {
-		if args[i] == key {
+		if args[i] == "--site" {
 			site = args[i+1]
-			break
+			i++
+		} else if args[i] == "--expected-coverage" {
+			expected_coverage, _ = strconv.Atoi(args[i+1])
+			i++
 		}
 		i++
 	}
-	return command, site
+	return command, site, expected_coverage
 }
 
 func showUsage(pgmName string) {
@@ -50,15 +54,24 @@ func showUsage(pgmName string) {
 	println(`get-coverage: retrieve code coverage in percentage`)
 	println("\noptions:")
 	println("--site sitename: i.e. --site http://localhost:9000")
+	println("--expected-coverage value: i.e. --expected-coverage 80")
 }
 
-func dispatch(command string, site string) {
+func dispatch(command string, site string, expected_coverage int) {
 	if "get-coverage" == command {
 		coverage := getCoverage(site)
 		fmt.Printf("%d\n", coverage)
 	} else if "get-complexity" == command {
 		complexity := getComplexity(site)
 		fmt.Printf("%d\n", complexity)
+	} else if "check-coverage" == command {
+		coverage := getCoverage(site)
+		if coverage >= expected_coverage {
+			println(fmt.Sprintf("passed!"))
+		} else {
+			println(fmt.Sprintf("failed: expected at least %d but got %d", expected_coverage, coverage))
+		}
+
 	}
 }
 
@@ -102,7 +115,7 @@ func callSonarQubeServer(site string) string {
 
 	data, _ := ioutil.ReadAll(resp.Body)
 
-	fmt.Println("data: " + string(data))
+	// fmt.Println("data: " + string(data))
 
 	return string(data)
 }
