@@ -49,12 +49,12 @@ func processArgs(args []string) (command string, site string, expected_coverage 
 }
 
 func showUsage(pgmName string) {
-	println(fmt.Sprintf("%s command [options]", pgmName))
-	println("\ncommands:") 
-	println(`get-coverage: retrieve code coverage in percentage`)
-	println("\noptions:")
-	println("--site sitename: i.e. --site http://localhost:9000")
-	println("--expected-coverage value: i.e. --expected-coverage 80")
+	fmt.Println(fmt.Sprintf("%s command [options]", pgmName))
+	fmt.Println("\ncommands:") 
+	fmt.Println(`get-coverage: retrieve code coverage in percentage`)
+	fmt.Println("\noptions:")
+	fmt.Println("--site sitename: i.e. --site http://localhost:9000")
+	fmt.Println("--expected-coverage value: i.e. --expected-coverage 80")
 }
 
 func dispatch(command string, site string, expected_coverage int) {
@@ -67,9 +67,9 @@ func dispatch(command string, site string, expected_coverage int) {
 	} else if "check-coverage" == command {
 		coverage := getCoverage(site)
 		if coverage >= expected_coverage {
-			println(fmt.Sprintf("passed!"))
+			fmt.Println(fmt.Sprintf("passed!"))
 		} else {
-			println(fmt.Sprintf("failed: expected at least %d but got %d", expected_coverage, coverage))
+			fmt.Println(fmt.Sprintf("failed: expected at least %d but got %d", expected_coverage, coverage))
 		}
 
 	}
