@@ -30,8 +30,8 @@ func main() {
 
 }
 
-func createProject(name as string) {
-
+func createProject(name string) string {
+	return ""
 }
 
 func getProjects(site string, tokenString string) []project {
