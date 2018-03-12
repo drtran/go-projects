@@ -30,6 +30,10 @@ func main() {
 
 }
 
+func createProject(name as string) {
+
+}
+
 func getProjects(site string, tokenString string) []project {
 	command := "projects"
 	data := openshiftGet(site, tokenString, command)
@@ -59,6 +63,7 @@ func getProjects(site string, tokenString string) []project {
  * + oc whoami -t
  * then copy the token string that can be used for 24 hours. 
  * 
+ * + use --loglevel=9 to get a detail of the restapi
  */
 func openshiftGet(site string, tokenString string, command string) string {
 	path := "/oapi/v1"
