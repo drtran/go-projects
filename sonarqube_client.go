@@ -67,7 +67,7 @@ func dispatch(command string, site string, expected_coverage int) {
 	} else if "check-coverage" == command {
 		coverage := getCoverage(site)
 		if coverage >= expected_coverage {
-			fmt.Println(fmt.Sprintf("passed!"))
+			fmt.Println(fmt.Sprintf("passed: expected %d and got %d", expected_coverage, coverage))
 		} else {
 			fmt.Println(fmt.Sprintf("failed: expected at least %d but got %d", expected_coverage, coverage))
 		}
