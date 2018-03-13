@@ -25,7 +25,9 @@ func main() {
 	if projects == nil || len(projects) == 0 {
 		fmt.Println("projects: empty!")
 	} else {
-	 	fmt.Println(projects[0])
+		for _, prj := range projects {
+	 		fmt.Println(prj)
+	 	}
 	}
 
 }
